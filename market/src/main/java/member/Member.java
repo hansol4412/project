@@ -4,6 +4,7 @@ import member.WrongIdPasswordException;
 public class Member {
 	private String id;
 	private String password;
+	private String name;
 	private String gender;
 	private String birth;
 	private String email;
@@ -11,10 +12,11 @@ public class Member {
 	private String address;
 	private LocalDateTime regiserDateTime;
 	
-	public Member(String id, String password, String gender, String birth, String email, String phone, String address,
+	public Member(String id, String password, String name, String gender, String birth, String email, String phone, String address,
 			LocalDateTime regiserDateTime) {
 		this.id = id;
 		this.password = password;
+		this.name = name;
 		this.gender = gender;
 		this.birth = birth;
 		this.email = email;
@@ -30,7 +32,11 @@ public class Member {
 	public String getPassword() {
 		return password;
 	}
-
+	
+	public String getName() {
+		return name;
+	} 
+	
 	public String getGender() {
 		return gender;
 	}
