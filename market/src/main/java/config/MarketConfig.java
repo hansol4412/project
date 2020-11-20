@@ -6,8 +6,12 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import member.MemberDao;
+import member.MemberRegisterService;
+import member.ChangePasswordService;
+import member.MemberDeleteService;
 public class MarketConfig {
-	// DB연결 및 서비스 의존설정
+	// DB연결 
+	// 서비스 클래스와 DAO 클래스를 위한 설정클래스
 	@Configuration
 	@EnableTransactionManagement
 	public class MemberConfig {
@@ -25,6 +29,7 @@ public class MarketConfig {
 			ds.setTimeBetweenEvictionRunsMillis(1000*10); //10초 주기로  유휴 컨넥션 유효여부
 			return ds;
 		}
+		
 		@Bean
 		public PlatformTransactionManager platformTransactionManager() {
 			DataSourceTransactionManager tm = new DataSourceTransactionManager();
@@ -36,5 +41,22 @@ public class MarketConfig {
 		public MemberDao memberDao() {
 			return new MemberDao(dataSource());
 		}
+		
+		@Bean
+		public MemberRegisterService memberRegisterService() {
+			return new MemberRegisterService(memberDao());
+		}
+		
+		@Bean 
+		public ChangePasswordService changePasswordService() {
+			return new ChangePasswordService(memberDao());
+		}
+		
+		@Bean
+		public MemberDeleteService memberDeleteService() {
+			return new MemberDeleteService(memberDao());
+		}
+		
+		
 	}
 }
