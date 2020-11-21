@@ -20,7 +20,6 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				config.MarketConfig
 				config.MvcConfig
 				config.ControllerConfig
 			</param-value>
