@@ -9,12 +9,12 @@ import member.MemberDao;
 import member.MemberRegisterService;
 import member.ChangePasswordService;
 import member.MemberDeleteService;
-public class MarketConfig {
+
 	// DB연결 
 	// 서비스 클래스와 DAO 클래스를 위한 설정클래스
 	@Configuration
 	@EnableTransactionManagement
-	public class MemberConfig {
+	public class MarketConfig {
 		@Bean(destroyMethod = "close")
 		public DataSource dataSource() {
 			DataSource ds = new DataSource();
@@ -59,4 +59,3 @@ public class MarketConfig {
 		
 		
 	}
-}

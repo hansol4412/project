@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +36,7 @@
 	<p>
 		<label>생일:<br>
 		<input type="text" name="birthyy" id="birthyy" maxlength="4">
-		<select name="birthmm">
+		<select name="birthmm" id="birthmm">
 			<option value="">월</option>
 			<option value="01">1</option>
 			<option value="02">2</option>
@@ -58,7 +57,7 @@
 	<p>
 		<label>이메일:<br>
 		<input type="text" name="eamil1" id="email1">@
-		<select name="email2">
+		<select name="email2" id="email2">
 			<option>naver.com</option>
 			<option>hanmail.net</option>
 			<option>gmail.com</option>
@@ -68,7 +67,15 @@
 	</p>
 	<p>
 		<label>전화번호:<br>
-		<input type="text" name="phone" id="phone">
+		<select name="phone1" id="phone1">
+			<option>010</option>
+			<option>011</option>
+			<option>016</option>
+			<option>017</option>
+			<option>019</option>
+		</select>
+		<input type="text" name="phone2" id="phone2" maxlength="4"> - 
+		<input type="text" name="phone3" id="phone3" maxlength="4">
 		</label>
 	</p>
 	<p>
