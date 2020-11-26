@@ -69,6 +69,15 @@ public class RegisterRequest {
 	public void setBirthdd(String birthdd) {
 		this.birthdd = birthdd;
 	}
+	public String getBirthyy() {
+		return birthyy;
+	}
+	public String getBirthmm() {
+		return birthmm;
+	}
+	public String getBirthdd() {
+		return birthdd;
+	}
 	public String getBirth() {
 		return birthyy +"-"+ birthmm +'-'+birthdd;
 	}
@@ -80,6 +89,13 @@ public class RegisterRequest {
 	
 	public void setEmail2(String email2) {
 		this.email2 = email2;
+	}
+	
+	public String getEmail1() {
+		return email1;
+	}
+	public String getEmail2() {
+		return email2;
 	}
 	public String getEmail() {
 		return email1 +"@"+email2;
@@ -97,7 +113,15 @@ public class RegisterRequest {
 	public void setPhone3(String phone3) {
 		this.phone3 = phone3;
 	}
-	
+	public String getPhone1() {
+		return phone1;
+	}
+	public String getPhone2() {
+		return phone2;
+	}
+	public String getPhone3() {
+		return phone3;
+	}
 	public String getPhone() {
 		return phone1 +"-" + phone2 + "-" + phone3;
 	}
