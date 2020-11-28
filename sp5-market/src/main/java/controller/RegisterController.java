@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.Errors;
 import member.MemberRegisterService;
 import member.DuplicateMemberException;
 import member.RegisterRequest;
@@ -70,12 +71,15 @@ public class RegisterController {
 	}
 	
 	@PostMapping("/register/step3")
-	public String handleStep3(RegisterRequest registerRequest) {
+	public String handleStep3(RegisterRequest registerRequest, Errors errors) {
+		new RegisterRequestValidator().validate(registerRequest, errors);
+		if(errors.hasErrors()) return "register/step2";
 		try {
 			memberRegisterService.regist(registerRequest);
 			return "register/step3";
-		} catch(DuplicateMemberException ex) {
-			return "register/step2";
+		}catch(DuplicateMemberException ex){
+			errors.rejectValue("id", "duplicate");
+			return "/register/step2";
 		}
 	}
 	
