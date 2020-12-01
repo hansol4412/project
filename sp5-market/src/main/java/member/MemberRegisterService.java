@@ -10,7 +10,7 @@ public class MemberRegisterService {
 	public String regist(RegisterRequest req) {
 		Member member = memberDao.selectById(req.getId());
 		if(member != null) {
-			throw new DuplicateMemberException("dup id : " + req.getId());
+			throw new DuplicateMemberException();
 		}
 		
 		Member newMember = new Member(req.getId(), req.getPassword(), req.getName(), req.getGender(),

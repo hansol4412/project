@@ -43,9 +43,9 @@
 	
 	<p>
 		<label><spring:message code="birth"/>:<br>
-		<form:input path="birthyy"/>
-		<form:select path="birthmm" items="${birthM}"/> 
-		<form:input path="birthdd"/>
+		<form:input path="birthyy"/>년
+		<form:select path="birthmm" items="${birthM}"/>월
+		<form:input path="birthdd"/>일
 		<form:errors path="birth"/>
 		</label>
 	</p>
@@ -59,7 +59,7 @@
 	</p>
 	<p>
 		<label><spring:message code="phone"/>:<br>
-		<form:select path="phone1" items="${phoneO}"/> 
+		<form:select path="phone1" items="${phoneO}"/>- 
 		<form:input path="phone2"/>- 
 		<form:input path="phone3"/>
 		<form:errors path="phone"/>

@@ -1,5 +1,6 @@
 package member;
-
+import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDateTime;
 
 public class RegisterRequest {

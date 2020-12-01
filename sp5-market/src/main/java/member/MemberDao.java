@@ -31,7 +31,8 @@ public class MemberDao {
 					rs.getString("email"),
 					rs.getString("phone"),
 					rs.getString("address"),
-					rs.getTimestamp("resist_day").toLocalDateTime());
+					rs.getTimestamp("resist_day").toLocalDateTime()
+					);
 				return member;
 			}
 		}, id);

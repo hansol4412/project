@@ -32,6 +32,7 @@ public class RegisterController {
 		}
 		
 		List<String> birthM = new ArrayList<>();
+			birthM.add("");
 			birthM.add("01");
 			birthM.add("02");
 			birthM.add("03");
@@ -47,6 +48,7 @@ public class RegisterController {
 		model.addAttribute("birthM", birthM);
 		
 		List<String> emailT = new ArrayList<>();
+			emailT.add("");
 			emailT.add("naver.com");
 			emailT.add("hanmail.net");
 			emailT.add("gmail.com");
@@ -54,11 +56,25 @@ public class RegisterController {
 		model.addAttribute("emailT", emailT);
 		
 		List<String> phoneO = new ArrayList<>();
+			phoneO.add("");
 			phoneO.add("010");
-			phoneO.add("011");
-			phoneO.add("016");
-			phoneO.add("017");
-			phoneO.add("019");
+			phoneO.add("02");
+			phoneO.add("031");
+			phoneO.add("032");
+			phoneO.add("033");
+			phoneO.add("041");
+			phoneO.add("042");
+			phoneO.add("043");
+			phoneO.add("044");
+			phoneO.add("051");
+			phoneO.add("052");
+			phoneO.add("053");
+			phoneO.add("054");
+			phoneO.add("055");
+			phoneO.add("061");
+			phoneO.add("062");
+			phoneO.add("063");
+			phoneO.add("064");
 		model.addAttribute("phoneO", phoneO);
 		
 		model.addAttribute("registerRequest", new RegisterRequest());
