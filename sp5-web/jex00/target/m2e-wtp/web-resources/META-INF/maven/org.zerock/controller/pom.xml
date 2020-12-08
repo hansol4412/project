@@ -126,6 +126,13 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
+		</dependency> 
+		
+		<!-- HikariCP -->   
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>2.7.4</version>
 		</dependency>        
 	</dependencies>
     <build>
