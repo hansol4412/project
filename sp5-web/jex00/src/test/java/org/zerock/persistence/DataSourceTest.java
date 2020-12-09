@@ -2,6 +2,8 @@ package org.zerock.persistence;
 import static org.junit.Assert.fail;
 import java.sql.Connection;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,11 @@ public class DataSourceTest {
 	@Setter(onMethod_ = {@Autowired})
 	private DataSource dataSource;
 	
-	@Test
+	@Setter(onMethod_= {@Autowired})
+	private SqlSessionFactory sqlSessionFactory;
+	
+	
+	/*@Test
 	public void testConncection() {
 		try(Connection con = dataSource.getConnection()){
 			log.info(con);
@@ -29,5 +35,18 @@ public class DataSourceTest {
 			fail(e.getMessage());
 		}
 	}
+	*/
+	
+	@Test
+	public void testMyBatis() {
+		try(SqlSession session = sqlSessionFactory.openSession();
+				Connection conn = session.getConnection()){
+			log.info(session);
+			log.info(conn);
+			}catch(Exception e) {
+				fail(e.getMessage());
+			}
+		}
+	}
 
-}
+
