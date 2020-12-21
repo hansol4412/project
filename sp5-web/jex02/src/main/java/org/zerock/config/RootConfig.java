@@ -10,8 +10,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @Configuration
+@ComponentScan(basePackages = "org.zerock.service")
 @MapperScan(basePackages= {"org.zerock.mapper"})
 public class RootConfig {
 	@Bean
