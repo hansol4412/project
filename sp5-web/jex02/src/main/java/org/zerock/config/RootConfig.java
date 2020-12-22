@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
 @Configuration
-@ComponentScan(basePackages = "org.zerock.service")
+@ComponentScan(basePackages = {"org.zerock.service", "org.zerock.controller"})
 @MapperScan(basePackages= {"org.zerock.mapper"})
 public class RootConfig {
 	@Bean
