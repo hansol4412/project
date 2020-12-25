@@ -2,7 +2,7 @@
 <head>
 </head>
 <body>
-   <!-- Sidebar -->
+   <!-- Sidebar: 왼쪽 메뉴창-->
     <div class="bg-light border-right" id="sidebar-wrapper">
       <div class="sidebar-heading">Start Bootstrap </div>
       <div class="list-group list-group-flush">
@@ -15,6 +15,8 @@
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
+   
+    
     
     <!-- Bootstrap core JavaScript -->
   <script src="../resources/vendor/jquery/jquery.min.js"></script>
