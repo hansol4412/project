@@ -3,7 +3,7 @@
 </head>
 <body>
   <!-- Menu Toggle Script -->
-  <script>
+  <script type="text/javascript">
     $("#menu-toggle").click(function(e) {
       e.preventDefault();
       $("#wrapper").toggleClass("toggled");
