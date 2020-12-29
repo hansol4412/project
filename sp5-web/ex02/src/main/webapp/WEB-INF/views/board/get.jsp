@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -15,9 +15,7 @@
 
   <!-- Custom styles for this template -->
   <link href="../resources/css/simple-sidebar.css" rel="stylesheet">
-  
 </head>
-
 <body>
 
   <div class="d-flex" id="wrapper">
@@ -65,52 +63,34 @@
       <div class="container-fluid">
         <div class="row">
        		<div class="col-lg-12">
-       			 <h1 class="mt-4">Tables</h1>
+       			 <h1 class="mt-4">Board Read</h1>
        		</div>
        </div>
        <div class="col-lg-12">
        		<div class="panel panel-default">
-       			<div class="panel-heading">Board List Pages
-       				<button id='regBtn' type="button" class="btn btn-xs pull-right">Register New Board</button>
-       			</div>
+       			<div class="panel-heading">Board Read Page</div>
        			<div class="panel-body">
-       				<table class="table table-striped table-bordered table-hover">
-       					<thead>
-       						<tr>
-       							<th>#번호</th>
-       							<th>제목</th>
-       							<th>작성자</th>
-       							<th>작성일</th>
-       							<th>수정일</th>
-       						</tr>
-       					</thead>
-       					<c:forEach items="${list}" var="board">
-       						<tr>
-       							<td><c:out value="${board.bno}"/></td>
-       							<td><a href='/board/get?bno=<c:out value="${board.bno}"/>'>
-       							<c:out value="${board.title}"/></a></td>
-       							<td><c:out value="${board.writer}"/></td>
-       							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.regdate}"/></td>
-       							<td><fmt:formatDate pattern="yyyy-MM-dd" value="${board.updateDate}"/></td>
-       						</tr>
-       					</c:forEach>
-       				</table>
-       				<!-- Modal 추가 -->
-       				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-       					<div class="modal-dialog">
-       						<div class="modal-content">
-       							<div class="modal-header">
-       								<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-       								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-       							</div>
-       							<div class="modal-body">처리가 완료되었습니다.</div>
-       							<div class="modal-footer">
-       								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-       								<button type="button" class="btn btn-primary">Save change</button>
-       							</div>
-       						</div>
+       					<div class="form-group">
+       						<label>Bno</label>
+       						<input  class="form-control" name="bno" value='<c:out value="${board.bno}"/>' readonly="readonly">
        					</div>
-       				</div>
+       					<div class="form-group">
+       						<label>Title</label>
+       						<input  class="form-control" name="title" value='<c:out value="${board.title}"/>' readonly="readonly">
+       					</div>
+       					<div class="form-group">
+       						<label>Text area</label>
+       						<textarea class="form-control" rows="3" name="content" readonly="readonly"><c:out value="${board.content}"/></textarea>
+       					</div>
+       					<div class="form-group">
+       						<label>Writer</label>
+       						<input  class="form-control" name="writer" value='<c:out value="${board.writer}"/>' readonly="readonly">
+       					</div>
+       					<button data-oper="modify" class="btn btn-default" >Modify</button>
+       					<button data-oper="list" class="btn btn-default" >List</button>
+       					<form id="operForm" action="/board/modify" method="get">
+       						<input type="hidden" id="bno" name="bno" value='<c:out value="${board.bno}"/>'>
+       					</form>
        			</div>
        		</div>
        </div>
@@ -121,31 +101,21 @@
   </div>
   <!-- /#wrapper -->
 <%@include file="../includes/footer.jsp" %>
-
   <script type="text/javascript">
-    $(document).ready(function() {
-    	var result = '<c:out value="${result}"/>';
-    	checkModal(result);
-    
-    	history.replaceState({}, null, null);
-    	
-    function checkModal(result){
-    	if(result==='' || history.state){
-    		return;
-    	}
-    	if(parseInt(result)>0){
-    		$(".modal-body").html("게시글 "+ parseInt(result) +"번이 등록되었습니다.");
-    	}
-    	$("#myModal").modal("show");
-    }
-    
-    $("#regBtn").on("click", function(){
-    	self.location="/board/register";
-    });
-    
-    });
-   </script>
+	$(document).ready(function(){
+	var operForm = $("#operForm");
+	
+	$("button[data-oper='modify']").on("click", function(e){
+		operForm.attr("action", "/board/modify").submit();
+	});
+	
+	$("button[data-oper='list']").on("click", function(e){
+		operForm.find("#bno").remove();
+		operForm.attr("action", "/board/list");
+		operForm.submit();
+	});
+	});
+	</script>
 
 </body>
-
 </html>
