@@ -21,6 +21,19 @@ public class BoardMapperTests {
 	private BoardMapper mapper;
 	
 	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("»õ·Î");
+		cri.setType("TC");
+		int total = mapper.getTotalCount(cri);
+		List<BoardVO> list = mapper.getListWithPaging(cri);
+		list.forEach(board -> log.info(board));
+		log.info("ÃÑ °¹¼ö-------------" + total);
+		
+	}
+	
+	/*
+	@Test
 	public void testPaging() {
 		Criteria cri = new Criteria();
 		cri.setPageNum(3);
@@ -30,7 +43,7 @@ public class BoardMapperTests {
 	}
 	
 	
-	/*
+	
 	@Test
 	public void testGetList() {
 		mapper.getList().forEach(board -> log.info(board));
