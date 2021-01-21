@@ -98,11 +98,13 @@
        				</div>
        			</div>
        		</div>
+       	<!-- 댓글 -->
         <div class="row">
        		<div class="col-lg-12">
        			<div class="panel panel-default">
        				<div class="panel-heading">
        					<i class="fa fa-comments fa-fw"></i>Reply
+       					<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
        				</div>
        				<div class="panel-body">
        					<ul class="chat">
@@ -127,12 +129,48 @@
 
   </div>
   <!-- /#wrapper -->
+  <!-- 모달창 -->
+  
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+       	<div class="modal-dialog">
+       		<div class="modal-content">
+       			<div class="modal-header">
+       				<h4 class="modal-title" id="myModalLabel">REPLY MODAL</h4>
+       				<button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="modalCloseBtn">&times;</button>
+       			</div>
+       			
+       			<div class="modal-body">
+       				<div class="form-group">
+       					<label>Reply</label>
+       					<input class="form-control" name="reply" value="New Reply"/>
+       				</div>
+       				<div class="form-group">
+       					<label>Replyer</label>
+       					<input class="form-control" name="replyer" value="replyer"/>
+       				</div>
+       				<div class="form-group">
+       					<label>Reply Date</label>
+       					<input class="form-control" name="replyDate" value=""/>
+       				</div>
+       			</div>
+       			<div class="modal-footer">
+       				<button id = "modalModBtn" type="button" class="btn btn-warning">Modify</button>
+       				<button id = "modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
+       				<button id = "modalRegisterBtn" type="button" class="btn btn-default">Register</button>
+       				<button id = "modalCloseBtn" type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+       			</div>
+       		</div>
+       	</div>
+   </div>	
+   				
 <%@include file="../includes/footer.jsp" %>
   <script type="text/javascript" src="../resources/js/reply.js"></script>
   <script>
+  $(document).ready(function(){
   	var bnoValue ='<c:out value="${board.bno}"/>';
   	var replyUL = $(".chat");
   		showList(1); //페이지번호
+  		
   		function showList(page){
   			replyService.getList({bno:bnoValue, page: page || 1}, function(list){
   				var str="";
@@ -140,60 +178,91 @@
   					replyUL.html("");
   					return;
   				}
-  				
   				for(var i=0, len=list.length || 0; i<len; i++){
   					str+="<li class='left clearfix' data-rno='" +list[i].rno+"'>";
   					str+="<div><div class='header'><strong class='primary-font'>" + list[i].replyer +"</strong>";
-  					str+="        <small class='pull-right text-muted'>" + list[i].replyDate +"</small></div>";
+  					str+="        <small class='pull-right text-muted'>" + replyService.displayTime(list[i].replyDate) +"</small></div>";
   					str+="     <p>"+list[i].reply+"</p></div></li>";
   				}
   				replyUL.html(str);
-  			});
-  		}
-  	
-  	/*
-  	//등록
-  	replyService.add({reply: "JS Test", replyer: "tester", bno:bnoValue}, 
-  					  function(result){
-  					 	alert("result:" + result);
-  						});
-  	*/
-  	/*
-  	// 댓글 리스트
-  	replyService.getList({bno: bnoValue, page:1}, 
-  		function(list){
-  		for(var i=0, len=list.length||0; i<len; i++){
-  			console.log(list[i]);
-  		}
-  	});
-  	*/
-  	/*
-  	//삭제
-  	replyService.remove(12, function(count){
-  		console.log(count);
-  		if(count==="success"){
-  			alert("remove");
-  		}
-  	}, function(err){
-  		alert('error...');
-  	});
-  	*/
-  	/*
-  	//수정
-  	replyService.update({
-  		rno: 13,
-  		bno: bnoValue,
-  		reply: "Modify Reply ....."
-  		}, function(result){
-  			alert("수정완료....");
+  			}); 
+  		}//end showList
+  		
+  		var modal = $(".modal");
+  		var modalInputReply = modal.find("input[name='reply']");
+  		var modalInputReplyer = modal.find("input[name='replyer']");
+  		var modalInputReplyDate = modal.find("input[name='replyDate']");
+  		
+  		var modalModBtn = $("#modalModBtn");
+  		var modalRemoveBtn = $("#modalRemoveBtn");
+  		var modalRegisterBtn = $("#modalRegisterBtn");
+  		
+  		$("#addReplyBtn").on("click", function(e){
+  			modal.find("input").val("");
+  			modalInputReplyDate.closest("div").hide();
+  			modal.find("button[id != 'modalCloseBtn']").hide();
+  			modalRegisterBtn.show();
+  			$(".modal").modal("show");
   		});
-  	*/
-  	/*
-  	//댓글 조회 처리
-  	replyService.get(10, function(data){
-  		console.log(data);
-  	});
-  	*/
+  		
+  		//댓글 추가 처리
+  		modalRegisterBtn.on("click", function(e){
+	  			var reply = {
+	  				reply: modalInputReply.val(),
+	  				replyer:modalInputReplyer.val(),
+	  				bno: bnoValue
+	  			};
+	  			replyService.add(reply, function(result){
+	  				alert(result);
+	  				modal.find("input").val("");
+	  				modal.modal("hide");
+	  				
+	  				showList(1);
+	  			});
+	  		});
+  		
+  		//댓글 조회 처리
+  		$(".chat").on("click", "li", function(e){
+  			var rno = $(this).data("rno");
+  			replyService.get(rno, function(reply){
+  				modalInputReply.val(reply.reply);
+  				modalInputReplyer.val(reply.replyer);
+  				modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly", "readonly");
+  				modal.data("rno", reply.rno);
+  				
+  				modal.find("button[id != 'modalCloseBtn']").hide();
+  	  			modalModBtn.show();
+  	  			modalRemoveBtn.show();
+  	  			$(".modal").modal("show");
+  			});
+  		});
+  		
+  		//댓글 수정 처리
+  		modalModBtn.on("click", function(e){
+	  			var reply = {
+	  				rno: modal.data("rno"),
+	  				reply: modalInputReply.val()
+	  			};
+	  			replyService.update(reply, function(result){
+	  				alert(result);
+	  				modal.modal("hide");
+	  				showList(1);
+	  			});
+	  		});
+  	
+  		//댓글 삭제 처리
+  		modalRemoveBtn.on("click", function(e){
+  			var rno = modal.data("rno");
+	  			replyService.remove(rno, function(result){
+	  				alert(result);
+	  				modal.modal("hide");
+	  				showList(1);
+	  			});
+	  		});
+  });
+  
+  	
+
   </script>
   <script type="text/javascript">
   $(document).ready(function(){
