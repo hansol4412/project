@@ -119,6 +119,9 @@
        						</li>
        					</ul>
        				</div>
+       				<div class="panel-footer">
+
+       				</div>
        			</div>
        		</div>
        	</div>
@@ -153,6 +156,7 @@
        					<input class="form-control" name="replyDate" value=""/>
        				</div>
        			</div>
+       			
        			<div class="modal-footer">
        				<button id = "modalModBtn" type="button" class="btn btn-warning">Modify</button>
        				<button id = "modalRemoveBtn" type="button" class="btn btn-danger">Remove</button>
@@ -172,10 +176,17 @@
   		showList(1); //페이지번호
   		
   		function showList(page){
-  			replyService.getList({bno:bnoValue, page: page || 1}, function(list){
+  			replyService.getList({bno:bnoValue, page: page || 1}, function(replyCnt, list){
+  				console.log("replyCnt: "+ replyCnt);
+  				console.log("list: " + list);
+				if(page==-1){
+					pageNum = Math.ceil(replyCnt/10.0);
+					showList(pageNum);
+					return;
+				}
   				var str="";
   				if(list == null || list.length == 0){
-  					replyUL.html("");
+  					//replyUL.html("");
   					return;
   				}
   				for(var i=0, len=list.length || 0; i<len; i++){
@@ -185,6 +196,7 @@
   					str+="     <p>"+list[i].reply+"</p></div></li>";
   				}
   				replyUL.html(str);
+  				showReplyPage(replyCnt);
   			}); 
   		}//end showList
   		
@@ -217,7 +229,7 @@
 	  				modal.find("input").val("");
 	  				modal.modal("hide");
 	  				
-	  				showList(1);
+	  				showList(-1);
 	  			});
 	  		});
   		
@@ -259,6 +271,39 @@
 	  				showList(1);
 	  			});
 	  		});
+  		
+  		var pageNum=1;
+  		var replyPageFooter = $(".panel-footer");
+  		
+  		function showReplyPage(replyCnt){
+  			var endNum = Math.ceil(PageNum/10.0)*10;
+  			var startNum = endNum-9;
+  			var prev = startNum !=1;
+  			var next = false;
+  			if(endNum * 10 >= replyCnt){
+  				endNum = Math.ceil(replyCnt/10.0);
+  			}
+  			if(endNum * 10 < replyCnt){
+  				next=true;
+  			}
+  			var str = "<ul class='pagination pull-right'>";
+  			if(prev){
+  				str+= "<li class='page-item'><a class='page-link' href='"+(startNum-1)+"'>Previous</a></li>";
+  			}
+  			
+  			for(var i = startNum; i<=endNum; i++){
+  				var active = pageNum==i? "active":"";
+  				str+= "<li class='page-item  "+active+" '><a class='page-link' href='" +i+ "'>"+i+"</a></li>";
+  			}
+  			
+  			if(next){
+  				str+="<li class='page-item'><a class='page-link' href='"+(endNum+1)+"'>Next</a></li>";
+  			}
+  			str +="</ul></div>";
+  			console.log(str);
+  			replyPageFooter.html(str);
+  		}
+  		
   });
   
   	

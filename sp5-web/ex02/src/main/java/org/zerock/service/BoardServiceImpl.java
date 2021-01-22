@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.zerock.mapper.BoardMapper;
 import org.zerock.domain.BoardVO;
 import org.zerock.domain.Criteria;
+import org.zerock.domain.ReplyPageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -59,4 +60,5 @@ public class BoardServiceImpl implements BoardService{
 		log.info("get total count");
 		return mapper.getTotalCount(cri);
 	}
+	
 }

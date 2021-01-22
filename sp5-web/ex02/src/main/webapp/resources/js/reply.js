@@ -30,7 +30,8 @@ var replyService = (function(){
 		$.getJSON("/replies/pages/" + bno + "/" + page +".json",
 			function(data){
 				if(callback){
-					callback(data);
+					//callback(data); //댓글만 가져오는 경우
+					callback(data.replyCnt, data.list); //댓글 수와 목록을 가져오는 경우
 				}
 			}).fail(function(xhr, status, err){
 				if(error){ error(); }

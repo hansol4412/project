@@ -21,15 +21,15 @@ public class ReplyMapperTests {
 	
 	@Setter(onMethod_ = @Autowired)
 	private ReplyMapper mapper;
-	/*
+	
 	@Test
 	public void testMapper() {
 		log.info(mapper);
 	}
-	
+	/*
 	@Test
 	public void testCreate() {
-		IntStream.rangeClosed(1, 10).forEach(i -> {
+		IntStream.rangeClosed(1, 100).forEach(i -> {
 			ReplyVO vo = new ReplyVO();
 			vo.setBno(bnoArr[i % 5]);
 			vo.setReply("´ñÅ¬ Å×½ºÆ®" + i);
@@ -64,11 +64,11 @@ public class ReplyMapperTests {
 		
 	}
 	*/
-	
 	@Test
-	public void testList() {
-		Criteria cri = new Criteria();
-		List<ReplyVO> replies = mapper.getListWithPaging(cri, bnoArr[0]);
+	public void testList2() {
+		Criteria cri = new Criteria(2,10);
+		List<ReplyVO> replies = mapper.getListWithPaging(cri, 141L);
 		replies.forEach(reply -> log.info(reply));
 	}
+	
 }
