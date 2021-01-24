@@ -258,7 +258,7 @@
 	  			replyService.update(reply, function(result){
 	  				alert(result);
 	  				modal.modal("hide");
-	  				showList(1);
+	  				showList(pageNum);
 	  			});
 	  		});
   	
@@ -268,7 +268,7 @@
 	  			replyService.remove(rno, function(result){
 	  				alert(result);
 	  				modal.modal("hide");
-	  				showList(1);
+	  				showList(pageNum);
 	  			});
 	  		});
   		
@@ -276,7 +276,7 @@
   		var replyPageFooter = $(".panel-footer");
   		
   		function showReplyPage(replyCnt){
-  			var endNum = Math.ceil(PageNum/10.0)*10;
+  			var endNum = Math.ceil(pageNum/10.0)*10;
   			var startNum = endNum-9;
   			var prev = startNum !=1;
   			var next = false;
@@ -303,6 +303,15 @@
   			console.log(str);
   			replyPageFooter.html(str);
   		}
+  		
+  		replyPageFooter.on("click","li a",function(e){
+  			e.preventDefault();
+  			console.log("page click");
+  			var targetPageNum = $(this).attr("href");
+  			console.log("targetPageNum: "+targetPageNum);
+  			pageNum = targetPageNum;
+  			showList(pageNum);
+  		});
   		
   });
   
