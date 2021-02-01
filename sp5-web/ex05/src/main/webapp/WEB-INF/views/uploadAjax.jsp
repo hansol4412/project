@@ -7,10 +7,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF">
 <title>Insert title here</title>
 </head>
+<style>
+	.uploadResult{
+		width:100%;
+		background-color: gray;
+	}
+	.uploadResult ul{
+		display: flex;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+	}
+	.uploadResult ul li{
+		list-style: none;
+		padding: 10px;
+	}
+	.uploadResult ul li img{
+		width: 20px;
+	}
+</style>
 <body>
 	<h1>Upload with Ajax</h1>
 	<div class="uploadDiv">
 		<input type='file' name='uplaodFile' multiple>
+	</div>
+	<div class='uploadResult'>
+		<ul>
+		</ul>
 	</div>
 	<button id='uploadBtn'>Upload</button>
 	
@@ -36,6 +59,7 @@
 				}
 				return true;
 			}
+			var cloneObj = $(".uploadDiv").clone();
 			
 			$("#uploadBtn").on("click", function(e){
 				var formData = new FormData();
@@ -51,6 +75,22 @@
 					formData.append("uploadFile", files[i]);
 				}
 				
+				var uploadResult = $(".uploadResult ul");
+				function showUploadedFile(uploadResultArr){
+					var str="";
+					$(uploadResultArr).each(function(i, obj){
+						if(!obj.image){
+							str += "<li><img src='/resources/img/attach.png'>" + obj.fileName + "</li>";
+						}
+						else{
+							//str += "<li>" + obj.fileName + "</li>";
+							var fileCallPath = encodeURIComponent(obj.uploadPath +"/s_"+obj.uuid+"_"+obj.fileName);
+							str += "<li><img src='/display?fileName="+fileCallPath+"'></li>";
+						}
+					});
+					uploadResult.append(str);
+				}
+				
 				$.ajax({
 					url: '/uploadAjaxAction',
 					processData : false,
@@ -59,7 +99,9 @@
 						type: 'post',
 						dataType : 'json',
 						success : function(result) {
-							alert("uploaded");
+							console.log(result);
+							showUploadedFile(result);
+							$(".uploadDiv").html(cloneObj.html());
 							}
 				});
 			});
