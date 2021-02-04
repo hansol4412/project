@@ -15,6 +15,46 @@
 
   <!-- Custom styles for this template -->
   <link href="../resources/css/simple-sidebar.css" rel="stylesheet">
+  	<style>
+		.uploadResult{
+			width:100%;
+			background-color: gray;
+		}
+		.uploadResult ul{
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+		}
+		.uploadResult ul li{
+			list-style: none;
+			padding: 10px;
+		}
+		.uploadResult ul li img{
+			width: 20px;
+		}
+		.bigPictureWrapper{
+			position: absolute;
+			display: none;
+			justify-content: center;
+			align-items: center;
+			top:0%;
+			width: 100%;
+			height: 100%;
+			background-color: gray;
+			z-index: 100;
+			background: rgba(255,255,255,0.5);
+		}
+		.bigPicture{
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		.bigPicture img{
+			width: 600px;
+		}
+	</style>
 </head>
 <body>
 
@@ -65,12 +105,12 @@
        		<div class="col-lg-12">
        			 <h1 class="mt-4">Board Register</h1>
        		</div>
-       </div>
+       	</div>
        <div class="col-lg-12">
        		<div class="panel panel-default">
        			<div class="panel-heading">Board Register</div>
        			<div class="panel-body">
-       				<form role="form" action="/board/register" method="post">
+       					<form role="form" action="/board/register" method="post">
        					<div class="form-group">
        						<label>Title</label>
        						<input  class="form-control" name="title">
@@ -85,10 +125,28 @@
        					</div>
        					<button type="submit" class="btn btn-default">Submit Button</button>
        					<button type="reset" class="btn btn-default">Reset Button</button>
-       				</form>
+       					</form>
+       				</div>
        			</div>
-       		</div>
-       </div>
+       			
+       			<div class="row">
+			      	<div class="col-lg-12">
+			      		<div class="panel panel-default">
+			      		
+			      		<div class="panel-heading">File Attach</div>
+			      		<div class="panel-body">
+			      			<div class="form-group uploadDiv">
+			      				<input type="file" name="uploadFile" multiple>
+			      			</div>
+			      			<div class='uploadResult'>
+			      				<ul>
+			      				</ul>
+			      			</div>
+			      		</div>
+			      		</div>
+			      	</div>
+	      		</div>
+       	</div>	
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -96,7 +154,86 @@
   </div>
   <!-- /#wrapper -->
 <%@include file="../includes/footer.jsp" %>
-  
-
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"></script> 
+			
+	<script>
+		$(document).ready(function(e){
+			var formObj = $("form[role='form']");
+			$("button[type='submit']").on("click", function(e){
+				e.preventDefault();
+				console.log("submit clicked");
+			});	 
+			
+			var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+			var maxSize = 5242880;
+			function checkExtension(fileName, fileSize){
+				if(fileSize>maxSize){
+					elert("파일 사이즈 초과");
+					return false;
+				}
+				if(regex.test(fileName)){
+					alert("해당 종류의 파일은 업로드 할 수 없습니다");
+					return false;
+				}
+				return true;
+			} //function checkExtension(fileName, fileSize){
+			
+			$("input[type='file']").change(function(e){
+				var formData = new FormData();
+				var inputFile = $("input[name='uploadFile']");
+				var files = inputFile[0].files;
+				console.log(files);
+				
+				for(var i=0; i<files.length; i++){
+					if(!checkExtension(files[i].name, files[i].size)){
+						return false;
+					}
+					formData.append("uploadFile", files[i]);
+				}  //for문
+				
+				function showUploadedFile(uploadResultArr){
+					if(!uploadResultArr || uploadResultArr.length == 0){return;}
+					var uploadUL = $(".uploadResult ul");
+					var str="";
+					$(uploadResultArr).each(function(i, obj){
+						if(obj.image){
+							var fileCallPath = encodeURIComponent(obj.uploadPath +"/s_"+obj.uuid+"_"+obj.fileName);
+							str += "<li><div>";
+							str += "<span>"+obj.fileName+"</span>"
+							str += "<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button>";
+							str += "<img src='/display?fileName="+fileCallPath+"'>";
+							str += "</div></li>"
+						}
+						else{
+							var fileCallPath = encodeURIComponent(obj.uploadPath+"/"+obj.uuid +"_"+obj.fileName);
+							var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+							str += "<li><div>";
+							str += "<span>"+obj.fileName+"</span>"
+							str += "<button type='button' class='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+							str += "<img src='/resources/img/attach.png'>";
+							str += "</div></li>"
+						}
+							
+					});  //$(uploadResultArr).each(function(i, obj){
+					uploadUL.append(str);
+				} //function showUploadedFile(uploadResultArr){
+				
+				$.ajax({
+					url: '/uploadAjaxAction',
+					processData : false,
+					contentType : false,
+					data: formData,
+						type: 'post',
+						dataType : 'json',
+						success : function(result) {
+							console.log(result);
+							showUploadedFile(result);
+						}
+				});  //$.ajax({
+			});	//$("input[type='file']").change(function(e){
+		}); //$(document).ready(function(e){
+	</script>
 </body>
 </html>
