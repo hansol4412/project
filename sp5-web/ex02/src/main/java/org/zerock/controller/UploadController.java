@@ -31,35 +31,11 @@ import java.util.List;
 
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
-import org.zerock.domain.BoardAttachVO;
+import org.zerock.domain.AttachFileDTO;
 
 @Controller
 @Log4j
 public class UploadController {
-	@GetMapping("/uploadForm")
-	public void uploadForm() {
-		log.info("upload form");
-	}
-	
-	@PostMapping("uploadFormAction")
-	public void uploadFormPost(MultipartFile[] uploadFile, Model model) {
-		String uploadFolder="C:\\upload";
-		
-		for(MultipartFile multipartFile : uploadFile) {
-			log.info("----------------------------");
-			log.info("Upload File Name:" + multipartFile.getOriginalFilename());
-			log.info("Upload File Size:" + multipartFile.getSize());
-			
-			File saveFile = new File(uploadFolder, multipartFile.getOriginalFilename());
-			
-			try {
-				multipartFile.transferTo(saveFile);
-			} catch(Exception e) {
-				log.error(e.getMessage());
-			}
-		}
-	}
-	
 	@GetMapping("/uploadAjax")
 	public void uploadAjax() {
 		log.info("upload ajax");
@@ -84,8 +60,8 @@ public class UploadController {
 	
 	@PostMapping(value="/uploadAjaxAction", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<BoardAttachVO>> uploadAjaxPost(MultipartFile[] uploadFile) {
-		List<BoardAttachVO> list = new ArrayList<BoardAttachVO>();
+	public ResponseEntity<List<AttachFileDTO>> uploadAjaxPost(MultipartFile[] uploadFile) {
+		List<AttachFileDTO> list = new ArrayList<AttachFileDTO>();
 		String uploadFolder="C:\\upload";
 		String uploadFolderPath = getFolder();
 		//make folder-------------
@@ -98,7 +74,7 @@ public class UploadController {
 		
 		for(MultipartFile multipartFile : uploadFile) {
 			
-			BoardAttachVO attachDTO = new BoardAttachVO();
+			AttachFileDTO attachDTO = new AttachFileDTO();
 			
 			log.info("----------------------------");
 			log.info("Upload File Name:" + multipartFile.getOriginalFilename());
@@ -117,9 +93,8 @@ public class UploadController {
 				attachDTO.setUuid(uuid.toString());
 				attachDTO.setUploadPath(uploadFolderPath);
 				
-				//이미지 파일인지 체크
 				if(checkImageType(saveFile)) {
-					attachDTO.setFileType(true);
+					attachDTO.setImage(true);
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName ));
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100 );
 					thumbnail.close();
@@ -129,7 +104,7 @@ public class UploadController {
 				log.error(e.getMessage());
 			}
 		}
-		return new ResponseEntity<List<BoardAttachVO>>(list,HttpStatus.OK);
+		return new ResponseEntity<List<AttachFileDTO>>(list,HttpStatus.OK);
 	}
 	
 	@GetMapping("/display")
@@ -185,7 +160,7 @@ public class UploadController {
 		}
 		return new ResponseEntity<Resource>(resource, headers, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String fileName, String type){
@@ -206,6 +181,6 @@ public class UploadController {
 		}
 		return new ResponseEntity<String>("delete", HttpStatus.OK);
 	}
-	
+
 
 }
