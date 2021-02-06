@@ -108,6 +108,7 @@
        				</div>
        				<div class="panel-body">
        					<ul class="chat">
+       					<!--  
        						<li class="left clearfix" data-rno='13'>
        							<div>
        								<div class="header">
@@ -117,6 +118,7 @@
        								<p>Good job!</p>
        							</div>
        						</li>
+       					-->
        					</ul>
        				</div>
        				<div class="panel-footer">
@@ -319,9 +321,14 @@
 
   </script>
   <script type="text/javascript">
-  $(document).ready(function(){
-	  console.log(replyService);
-  });
+  	$(document).ready(function(){
+	 (function(){
+		 var bno = '<c:out value="${board.bno}"/>';
+		  $.gerJson("../board/getAttachList", {bno:bno}, function(arr){
+			  console.log(arr);
+		  });
+	 }); //end function()
+  	});
   
 	$(document).ready(function(){
 	

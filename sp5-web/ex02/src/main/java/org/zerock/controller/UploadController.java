@@ -32,15 +32,11 @@ import java.util.List;
 import lombok.extern.log4j.Log4j;
 import net.coobird.thumbnailator.Thumbnailator;
 import org.zerock.domain.AttachFileDTO;
+//import org.zerock.domain.BoardAttachVO;
 
 @Controller
 @Log4j
 public class UploadController {
-	@GetMapping("/uploadAjax")
-	public void uploadAjax() {
-		log.info("upload ajax");
-	}
-	
 	private String getFolder() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
