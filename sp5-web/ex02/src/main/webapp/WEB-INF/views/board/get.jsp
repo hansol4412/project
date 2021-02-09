@@ -398,10 +398,10 @@
 						str += "</div></li>";
 				  }
 				  else{
-						str += "<li><data-path='" + attach.uploadPath + "'";
+						str += "<li data-path='" + attach.uploadPath + "'";
 						str += "data-uuid='"+attach.uuid +"' data-filename ='" + attach.fileName+"'data-type='" +attach.fileType+"'"
 						str += " ><div>";
-						str += "<span>"+obj.fileName+"</span>"
+						str += "<span>"+attach.fileName+"</span>"
 						str += "<img src='/resources/img/attach.png'>";
 						str += "</div></li>";
 				  }
