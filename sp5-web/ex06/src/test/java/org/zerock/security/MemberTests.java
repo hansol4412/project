@@ -68,7 +68,39 @@ public class MemberTests {
 		}
 	}
 	*/
-	
+/*
+	@Test
+	public void testInsertMember1() {
+		String sql = "insert into tbl_member(userid, userpw, username) values (?,?,?)";
+		
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			try{
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, "admin123");
+				pstmt.setString(2, pwencoder.encode("pw123"));
+				pstmt.setString(3, "°ü¸®ÀÚ123");
+				pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				if(pstmt != null) {
+					try {
+						pstmt.close();
+					}catch(Exception e) {}
+				}
+				if(con != null) {
+					try {
+						con.close();
+					}catch(Exception e) {}
+				}
+			}
+			
+	}
+	*/
+	/*
 	@Test
 	public void testInsertAuth() {
 		String sql = "insert into tbl_member_auth (userid, auth) values (?,?)";
@@ -107,5 +139,34 @@ public class MemberTests {
 				}
 			}
 		}
+	}*/
+	@Test
+	public void testInsertAuth1() {
+		String sql = "insert into tbl_member_auth (userid, auth) values (?,?)";
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			try{
+				con = ds.getConnection();
+				pstmt = con.prepareStatement(sql);
+				
+				
+					pstmt.setString(1, "admin123");
+					pstmt.setString(2, "ROLE_MEMBER");
+					
+				pstmt.executeUpdate();
+			}catch(Exception e) {
+				e.printStackTrace();
+			}finally {
+				if(pstmt != null) {
+					try {
+						pstmt.close();
+					}catch(Exception e) {}
+				}
+				if(con != null) {
+					try {
+						con.close();
+					}catch(Exception e) {}
+				}
+			}
 	}
 }
