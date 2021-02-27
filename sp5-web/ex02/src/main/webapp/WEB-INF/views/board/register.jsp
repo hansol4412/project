@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -62,43 +63,6 @@
  <%@include file="../includes/header.jsp" %> 
     <!-- Page Content -->
     <div id="page-content-wrapper">
-     
-    <!-- 위 메뉴 -->
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-      	<!-- 메뉴 토글 -->
-        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-
-		<!-- 위 메뉴의 오른쪽 -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Link</a>
-            </li>
-            
-            <!-- 드롭다운 -->
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
-              </a>
-		              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-		                <a class="dropdown-item" href="#">Action</a>
-		                <a class="dropdown-item" href="#">Another action</a>
-		                <div class="dropdown-divider"></div>
-		                <a class="dropdown-item" href="#">Something else here</a>
-		              </div>		
-            </li>
-          </ul>
-        </div>
-      </nav>
-      
 		<!-- 본문 -->
       <div class="container-fluid">
         <div class="row">
@@ -109,6 +73,7 @@
        <div class="col-lg-12">
        		<div class="panel panel-default">
        			<div class="panel-heading">Board Register</div>
+       			<input type='hidden' name="${_csrf.parameterName}" value="${_csrf.token}"/>
        			<div class="panel-body">
        					<form role="form" action="/board/register" method="post">
        					<div class="form-group">
@@ -121,7 +86,8 @@
        					</div>
        					<div class="form-group">
        						<label>Writer</label>
-       						<input  class="form-control" name="writer">
+       						<input  class="form-control" name="writer" value='<sec:authentication property="principal.username"/>' 
+       							readonly="readonly"/>
        					</div>
        					<button type="submit" class="btn btn-default">Submit Button</button>
        					<button type="reset" class="btn btn-default">Reset Button</button>
