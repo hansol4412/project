@@ -73,9 +73,9 @@
        <div class="col-lg-12">
        		<div class="panel panel-default">
        			<div class="panel-heading">Board Register</div>
-       			<input type='hidden' name="${_csrf.parameterName}" value="${_csrf.token}"/>
        			<div class="panel-body">
        					<form role="form" action="/board/register" method="post">
+       					<input type='hidden' name="${_csrf.parameterName}" value="${_csrf.token}"/>
        					<div class="form-group">
        						<label>Title</label>
        						<input  class="form-control" name="title">
@@ -160,6 +160,8 @@
 				return true;
 			} //function checkExtension(fileName, fileSize){
 			
+			var csrfHeaderName ="${_csrf.headerName}";
+			var csrfTokenValue ="${_csrf.token}";
 			$("input[type='file']").change(function(e){
 				var formData = new FormData();
 				var inputFile = $("input[name='uploadFile']");
@@ -177,6 +179,9 @@
 					url: '/uploadAjaxAction',
 					processData : false,
 					contentType : false,
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+					},
 					data: formData,
 						type: 'post',
 						dataType : 'json',
@@ -224,6 +229,9 @@
 				$.ajax({
 					url: '/deleteFile',
 					data: {fileName : targetFile, type : type},
+					beforeSend : function(xhr){
+						xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+					},
 						type: 'post',
 						dataType : 'text',
 						success : function(result) {

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -77,6 +78,7 @@
        			<div class="panel-heading">Board Read Page</div>
        			<div class="panel-body">
        			<form role="form" action="/board/modify" method="post">
+       			<input type='hidden' name="${_csrf.parameterName}" value="${_csrf.token}"/>
        			<input type='hidden' name='pageNum' value='<c:out value="${cri.pageNum}"/>'>
        			<input type='hidden' name='amount' value='<c:out value="${cri.amount}"/>'>
        			<input type='hidden' name="type" value="${pageMaker.cri.type}">
@@ -107,8 +109,13 @@
        						<input  class="form-control" name="updateDate" 
        							value='<fmt:formatDate pattern="yyyy/MM/dd" value="${board.updateDate}"/>' readonly="readonly">
        					</div>
-       					<button type="submit" data-oper="modify" class="btn btn-default" >Modify</button>
-       					<button type="submit" data-oper="remove" class="btn btn-default" >Remove</button>
+       					<sec:authentication property="principal" var="pinfo"/>
+       						<sec:authorize access="isAuthenticated()">
+       							<c:if test="${pinfo.username eq board.writer}">
+       								<button type="submit" data-oper="modify" class="btn btn-default" >Modify</button>
+       								<button type="submit" data-oper="remove" class="btn btn-default" >Remove</button>
+       							</c:if>
+       						</sec:authorize>
        					<button type="submit" data-oper="list" class="btn btn-default" >List</button>
        			</form>
        			</div>
@@ -227,7 +234,8 @@
 				}
 				return true;
 			} //function checkExtension(fileName, fileSize){
-			
+			var csrfHeaderName ="${_csrf.headerName}";
+			var csrfTokenValue ="${_csrf.token}";
 			$("input[type='file']").change(function(e){
 				var formData = new FormData();
 				var inputFile = $("input[name='uploadFile']");
@@ -248,6 +256,9 @@
 					data: formData,
 						type: 'post',
 						dataType : 'json',
+						beforeSend : function(xhr){
+							xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);
+						},
 						success : function(result) {
 							console.log(result);
 							showUploadedFile(result);

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -90,7 +91,12 @@
        						<label>Writer</label>
        						<input  class="form-control" name="writer" value='<c:out value="${board.writer}"/>' readonly="readonly">
        					</div>
-       					<button data-oper="modify" class="btn btn-default" >Modify</button>
+       					<sec:authentication property="principal" var="pinfo"/>
+       						<sec:authorize access="isAuthenticated()">
+       							<c:if test="${pinfo.username eq board.writer}">
+       								<button data-oper="modify" class="btn btn-default" >Modify</button>
+       							</c:if>
+       						</sec:authorize>
        					<button data-oper="list" class="btn btn-default" >List</button>
        					<form id="operForm" action="/board/modify" method="get">
        						<input type="hidden" id="bno" name="bno" value='<c:out value="${board.bno}"/>'>
@@ -126,7 +132,9 @@
        			<div class="panel panel-default">
        				<div class="panel-heading">
        					<i class="fa fa-comments fa-fw"></i>Reply
-       					<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+       					<sec:authorize access="isAuthenticated()">
+       						<button id='addReplyBtn' class='btn btn-primary btn-xs pull-right'>New Reply</button>
+       					</sec:authorize>
        				</div>
        				<div class="panel-body">
        					<ul class="chat">
